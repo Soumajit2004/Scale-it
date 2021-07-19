@@ -5,7 +5,10 @@ from PIL.ExifTags import TAGS
 
 
 class ImageWidget:
-    def __init__(self, image_path, widget_id):
+    def __init__(self, image_path, widget_id, date_label):
+        # Labels
+        self.date_label = date_label
+
         # Raw Image Path
         self.widget_id = widget_id
         self.image = image_path
@@ -145,4 +148,5 @@ class ImageWidget:
             final_date += date[-1]
             date = final_date
 
+        self.date_label.setText(date)
 
