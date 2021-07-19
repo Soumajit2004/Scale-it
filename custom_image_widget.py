@@ -7,17 +7,24 @@ from hurry.filesize import alternative, size
 
 
 class ImageWidget:
-    def __init__(self, image_path, widget_id, date_label, space_label, format_label, color_label):
+    def __init__(self, image_path, widget_id, date_label, space_label, format_label, color_label, width_input,
+                 height_input):
         # Labels
         self.date_label = date_label
         self.space_label = space_label
         self.format_label = format_label
         self.color_label = color_label
+        self.width_input = width_input
+        self.height_input = height_input
 
         # Raw Image Path
         self.widget_id = widget_id
         self.image = image_path
+        self.pil_img = Image.open(image_path)
         self.saving_path = image_path
+
+        # Dimensions
+        self.img_width, self.img_height = self.pil_img.size
 
         # Image Name
         self.image_name = self.image.split("/")[-1]
@@ -133,8 +140,8 @@ class ImageWidget:
     def widget_selected(self, event):
         # Getting Data
         data_dict = {}
-        img = Image.open(self.image)
-        img_data = img.getexif()
+
+        img_data = self.pil_img.getexif()
         for tag_id in img_data:
             # get the tag name, instead of human unreadable tag id
             tag = TAGS.get(tag_id, tag_id)
@@ -164,10 +171,10 @@ class ImageWidget:
         self.space_label.setText(size(space, system=alternative))
 
         # Getting Image Format
-        self.format_label.setText(img.format)
+        self.format_label.setText(self.pil_img.format)
 
         # Getting Color Space of Image
-        exif = img.getexif() or {}
+        exif = self.pil_img.getexif() or {}
         if exif.get(0xA001) == 1 or exif.get(0x0001) == 'R98':
             self.color_label.setText('sRGB')
         elif exif.get(0xA001) == 2 or exif.get(0x0001) == 'R03':
@@ -176,3 +183,8 @@ class ImageWidget:
             self.color_label.setText('----')
         else:
             self.color_label.setText('----')
+
+        # Updating Resolution Field
+        self.width_input.setText(str(self.img_width))
+        self.height_input.setText(str(self.img_height))
+

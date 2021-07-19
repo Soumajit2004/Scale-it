@@ -610,7 +610,8 @@ class Ui_MainWindow(object):
                 # Create Widget
                 image_widget_class = ImageWidget(image_path=img_path, widget_id=len(image_list) + 1,
                                                  date_label=self.img_date, space_label=self.img_size,
-                                                 format_label=self.img_format, color_label=self.img_color)
+                                                 format_label=self.img_format, color_label=self.img_color,
+                                                 width_input=self.img_width, height_input=self.img_height)
 
                 # Add to Image list
                 image_list.append(image_widget_class)
