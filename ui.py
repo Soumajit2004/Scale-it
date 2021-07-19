@@ -13,6 +13,7 @@ from custom_image_widget import ImageWidget
 from brain import Brain
 
 image_list = []
+widget_selected = 0
 
 
 class Ui_MainWindow(object):

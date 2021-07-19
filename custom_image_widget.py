@@ -48,13 +48,15 @@ class ImageWidget:
         self.Form.setSizePolicy(sizePolicy)
         self.Form.setMinimumSize(QtCore.QSize(0, 100))
         self.Form.setMaximumSize(QtCore.QSize(16777215, 100))
-        self.Form.setStyleSheet("background-color:#98DED9; border-radius:8px;")
+        self.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;\nborder-radius: 8px;\n}\nQWidget:hover{"
+                                "\nborder: 3px solid #161D6F\n}\n")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.Form)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.label = QtWidgets.QLabel(self.Form)
         self.label.setText("")
         self.label.setPixmap(QtGui.QPixmap("assets/images/image.png"))
         self.label.setObjectName("label")
+        self.label.setStyleSheet("QLabel{\ncolor:#161D6F;\nborder:0px;\n}")
         self.horizontalLayout.addWidget(self.label)
         self.image_label = QtWidgets.QLabel(self.Form)
         font = QtGui.QFont()
@@ -138,53 +140,89 @@ class ImageWidget:
         img.show()
 
     def widget_selected(self, event):
-        # Getting Data
-        data_dict = {}
 
-        img_data = self.pil_img.getexif()
-        for tag_id in img_data:
-            # get the tag name, instead of human unreadable tag id
-            tag = TAGS.get(tag_id, tag_id)
-            data = img_data.get(tag_id)
-            # decode bytes
+        if ui.widget_selected != self.widget_id:
+            print(ui.widget_selected)
+            # Updating Stylesheet
+            self.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;\nborder-radius: 8px; border: 3px solid "
+                                    "#161D6F\n} "
+                                    "}")
 
-            data_dict[tag] = data
-        print(data_dict)
-        # Getting Date Data
-        try:
-            date_time = data_dict["DateTime"]
-        except KeyError:
-            date = "0000-00-00"
+            if ui.widget_selected != 0:
+                for i in ui.image_list:
+                    if ui.widget_selected == i.widget_id:
+                        i.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;\nborder-radius: "
+                                             "8px;\n}\nQWidget:hover{ "
+                                             "\nborder: 3px solid #161D6F\n}\n")
+
+            # Updating Widget Selected form ui
+            ui.widget_selected = self.widget_id
+            print(ui.widget_selected)
+
+            # Getting Data
+            data_dict = {}
+
+            img_data = self.pil_img.getexif()
+            for tag_id in img_data:
+                # get the tag name, instead of human unreadable tag id
+                tag = TAGS.get(tag_id, tag_id)
+                data = img_data.get(tag_id)
+                # decode bytes
+
+                data_dict[tag] = data
+            print(data_dict)
+            # Getting Date Data
+            try:
+                date_time = data_dict["DateTime"]
+            except KeyError:
+                date = "0000-00-00"
+            else:
+                date = date_time.split()[0]
+                date = date.split(":")
+                final_date = ""
+                for d in date[:-1]:
+                    final_date += f"{d}-"
+                final_date += date[-1]
+                date = final_date
+            # Updating DateLabel
+            self.date_label.setText(date)
+
+            # Getting Image Size
+            space = os.path.getsize(self.image)
+            self.space_label.setText(size(space, system=alternative))
+
+            # Getting Image Format
+            self.format_label.setText(self.pil_img.format)
+
+            # Getting Color Space of Image
+            exif = self.pil_img.getexif() or {}
+            if exif.get(0xA001) == 1 or exif.get(0x0001) == 'R98':
+                self.color_label.setText('sRGB')
+            elif exif.get(0xA001) == 2 or exif.get(0x0001) == 'R03':
+                self.color_label.setText('AdobeRGB')
+            elif exif.get(0xA001) is None and exif.get(0x0001) is None:
+                self.color_label.setText('----')
+            else:
+                self.color_label.setText('----')
+
+            # Updating Resolution Field
+            self.width_input.setText(str(self.img_width))
+            self.height_input.setText(str(self.img_height))
+
         else:
-            date = date_time.split()[0]
-            date = date.split(":")
-            final_date = ""
-            for d in date[:-1]:
-                final_date += f"{d}-"
-            final_date += date[-1]
-            date = final_date
-        # Updating DateLabel
-        self.date_label.setText(date)
+            print(ui.widget_selected)
+            # Resetting widget selected
+            ui.widget_selected = 0
+            print(ui.widget_selected)
 
-        # Getting Image Size
-        space = os.path.getsize(self.image)
-        self.space_label.setText(size(space, system=alternative))
-
-        # Getting Image Format
-        self.format_label.setText(self.pil_img.format)
-
-        # Getting Color Space of Image
-        exif = self.pil_img.getexif() or {}
-        if exif.get(0xA001) == 1 or exif.get(0x0001) == 'R98':
-            self.color_label.setText('sRGB')
-        elif exif.get(0xA001) == 2 or exif.get(0x0001) == 'R03':
-            self.color_label.setText('AdobeRGB')
-        elif exif.get(0xA001) is None and exif.get(0x0001) is None:
-            self.color_label.setText('----')
-        else:
+            # Resetting Labels
+            self.date_label.setText("0000-00-00")
+            self.space_label.setText("--")
+            self.format_label.setText("---")
+            self.width_input.setText("")
+            self.height_input.setText("")
             self.color_label.setText('----')
 
-        # Updating Resolution Field
-        self.width_input.setText(str(self.img_width))
-        self.height_input.setText(str(self.img_height))
-
+            # Resetting Stylesheet
+            self.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;\nborder-radius: 8px;\n}\nQWidget:hover{"
+                                    "\nborder: 3px solid #161D6F\n}\n")
