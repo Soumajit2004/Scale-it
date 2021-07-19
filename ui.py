@@ -420,14 +420,9 @@ class Ui_MainWindow(object):
         self.img_size.setAlignment(QtCore.Qt.AlignCenter)
         self.img_size.setObjectName("img_size")
         self.horizontalLayout_4.addWidget(self.img_size)
-        self.label_7 = QtWidgets.QLabel(self.frame_8)
         font = QtGui.QFont()
         font.setFamily("Poppins Medium")
         font.setPointSize(12)
-        self.label_7.setFont(font)
-        self.label_7.setAlignment(QtCore.Qt.AlignBottom | QtCore.Qt.AlignHCenter)
-        self.label_7.setObjectName("label_7")
-        self.horizontalLayout_4.addWidget(self.label_7)
         self.verticalLayout_5.addWidget(self.frame_8)
         self.frame_9 = QtWidgets.QFrame(self.scrollAreaWidgetContents)
         self.frame_9.setMinimumSize(QtCore.QSize(0, 80))
@@ -594,7 +589,6 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Details"))
         self.label_5.setText(_translate("MainWindow", "Size"))
         self.img_size.setText(_translate("MainWindow", "--"))
-        self.label_7.setText(_translate("MainWindow", "mb"))
         self.label_8.setText(_translate("MainWindow", "Color"))
         self.img_color.setText(_translate("MainWindow", "----"))
         self.label_10.setText(_translate("MainWindow", "Formart"))
@@ -615,7 +609,7 @@ class Ui_MainWindow(object):
             try:
                 # Create Widget
                 image_widget_class = ImageWidget(image_path=img_path, widget_id=len(image_list) + 1,
-                                                 date_label=self.img_date)
+                                                 date_label=self.img_date, space_label=self.img_size)
 
                 # Add to Image list
                 image_list.append(image_widget_class)

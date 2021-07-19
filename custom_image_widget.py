@@ -2,12 +2,15 @@ from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 import ui
 from PIL.ExifTags import TAGS
+import os
+from hurry.filesize import alternative, size
 
 
 class ImageWidget:
-    def __init__(self, image_path, widget_id, date_label):
+    def __init__(self, image_path, widget_id, date_label, space_label):
         # Labels
         self.date_label = date_label
+        self.space_label = space_label
 
         # Raw Image Path
         self.widget_id = widget_id
@@ -154,3 +157,6 @@ class ImageWidget:
         # Updating DateLabel
         self.date_label.setText(date)
 
+        # Getting Image Size
+        space = os.path.getsize(self.image)
+        self.space_label.setText(size(space, system=alternative))
