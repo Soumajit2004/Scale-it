@@ -113,6 +113,7 @@ class ImageWidget:
         return self.Form
 
     def delete_fnc(self):
+        # Iterate through image list and finds widget
         for i in ui.image_list:
             if i.widget_id == self.widget_id:
                 ui.image_list.remove(i)
@@ -120,10 +121,12 @@ class ImageWidget:
         self.Form.deleteLater()
 
     def open_image(self):
+        # Opens Image
         img = Image.open(self.image)
         img.show()
 
     def widget_selected(self, event):
+        # Getting Data
         data_dict = {}
         img = Image.open(self.image)
         img_data = img.getexif()
@@ -135,6 +138,7 @@ class ImageWidget:
 
             data_dict[tag] = data
 
+        # Getting Date Data
         try:
             date_time = data_dict["DateTime"]
         except KeyError:
@@ -147,6 +151,6 @@ class ImageWidget:
                 final_date += f"{d}-"
             final_date += date[-1]
             date = final_date
-
+        # Updating DateLabel
         self.date_label.setText(date)
 

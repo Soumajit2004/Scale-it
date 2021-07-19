@@ -24,10 +24,12 @@ class Brain:
             result_img = sr.upsample(img)
             cv2.imwrite("output/image.png", result_img)
 
+        # Multi Threading
         threading_1 = threading.Thread(target=upscale)
         threading_1.start()
         threading_1.join()
 
+        # Resizing Image
         img = Image.open("output/image.png")
         img = img.resize((width, height))
         img.show()

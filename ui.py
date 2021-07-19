@@ -629,8 +629,7 @@ class Ui_MainWindow(object):
                 print("Invalid Image Path")
 
     def convert_fnc(self):
+        # Converting Image
         for i in image_list:
             self.brain.upscale_img(img_instance=i, width=1920, height=1080)
 
-    def convert_names(self, date):
-        self.img_date.setText("date")
