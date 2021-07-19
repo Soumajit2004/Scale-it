@@ -7,10 +7,12 @@ from hurry.filesize import alternative, size
 
 
 class ImageWidget:
-    def __init__(self, image_path, widget_id, date_label, space_label):
+    def __init__(self, image_path, widget_id, date_label, space_label, format_label, color_label):
         # Labels
         self.date_label = date_label
         self.space_label = space_label
+        self.format_label = format_label
+        self.color_label = color_label
 
         # Raw Image Path
         self.widget_id = widget_id
@@ -140,7 +142,7 @@ class ImageWidget:
             # decode bytes
 
             data_dict[tag] = data
-
+        print(data_dict)
         # Getting Date Data
         try:
             date_time = data_dict["DateTime"]
@@ -160,3 +162,17 @@ class ImageWidget:
         # Getting Image Size
         space = os.path.getsize(self.image)
         self.space_label.setText(size(space, system=alternative))
+
+        # Getting Image Format
+        self.format_label.setText(img.format)
+
+        # Getting Color Space of Image
+        exif = img.getexif() or {}
+        if exif.get(0xA001) == 1 or exif.get(0x0001) == 'R98':
+            self.color_label.setText('sRGB')
+        elif exif.get(0xA001) == 2 or exif.get(0x0001) == 'R03':
+            self.color_label.setText('AdobeRGB')
+        elif exif.get(0xA001) is None and exif.get(0x0001) is None:
+            self.color_label.setText('----')
+        else:
+            self.color_label.setText('----')

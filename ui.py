@@ -587,11 +587,11 @@ class Ui_MainWindow(object):
         self.sacing_pathfield.setPlaceholderText(_translate("MainWindow", "Enter Saving Path"))
         self.save_path.setText(_translate("MainWindow", "..."))
         self.label_4.setText(_translate("MainWindow", "Details"))
-        self.label_5.setText(_translate("MainWindow", "Size"))
+        self.label_5.setText(_translate("MainWindow", "Size:"))
         self.img_size.setText(_translate("MainWindow", "--"))
-        self.label_8.setText(_translate("MainWindow", "Color"))
+        self.label_8.setText(_translate("MainWindow", "Color:"))
         self.img_color.setText(_translate("MainWindow", "----"))
-        self.label_10.setText(_translate("MainWindow", "Formart"))
+        self.label_10.setText(_translate("MainWindow", "Formart:"))
         self.img_format.setText(_translate("MainWindow", "---"))
         self.label_12.setText(_translate("MainWindow", "Date Created"))
         self.img_date.setText(_translate("MainWindow", "0000-00-00"))
@@ -609,7 +609,8 @@ class Ui_MainWindow(object):
             try:
                 # Create Widget
                 image_widget_class = ImageWidget(image_path=img_path, widget_id=len(image_list) + 1,
-                                                 date_label=self.img_date, space_label=self.img_size)
+                                                 date_label=self.img_date, space_label=self.img_size,
+                                                 format_label=self.img_format, color_label=self.img_color)
 
                 # Add to Image list
                 image_list.append(image_widget_class)
