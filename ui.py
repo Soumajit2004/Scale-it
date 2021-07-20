@@ -568,6 +568,8 @@ class Ui_MainWindow(object):
 
         self.add_image.clicked.connect(self.add_image_fnc)
         self.convert.clicked.connect(self.convert_fnc)
+        self.img_width.textChanged.connect(self.change_width)
+        self.img_height.textChanged.connect(self.change_height)
 
         # ----------------------------------- My code ------------------------------------------------------------
 
@@ -630,3 +632,18 @@ class Ui_MainWindow(object):
         for i in image_list:
             self.brain.upscale_img(img_instance=i, width=1920, height=1080)
 
+    def change_width(self):
+        if widget_selected != 0:
+            pass
+
+            for i in image_list:
+                if i.widget_id == widget_selected:
+                    i.img_width = self.img_width.text()
+
+    def change_height(self):
+        if widget_selected != 0:
+            pass
+
+            for i in image_list:
+                if i.widget_id == widget_selected:
+                    i.img_height = self.img_height.text()

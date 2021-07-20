@@ -207,7 +207,9 @@ class ImageWidget:
 
             # Updating Resolution Field
             self.width_input.setText(str(self.img_width))
+            print(self.width_input.text())
             self.height_input.setText(str(self.img_height))
+            print(self.height_input.text())
 
         else:
             print(ui.widget_selected)
