@@ -134,6 +134,20 @@ class ImageWidget:
         for i in ui.image_list:
             if i.widget_id == self.widget_id:
                 ui.image_list.remove(i)
+
+        if ui.widget_selected != 0:
+            ui.widget_selected = 0
+            print(ui.widget_selected)
+
+            # Resetting Labels
+            self.date_label.setText("0000-00-00")
+            self.space_label.setText("--")
+            self.format_label.setText("---")
+            self.width_input.setText("")
+            self.height_input.setText("")
+            self.color_label.setText('----')
+            self.save_input.setText("")
+
         # Removes Widget
         self.Form.deleteLater()
 
