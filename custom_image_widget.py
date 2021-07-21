@@ -8,7 +8,7 @@ from hurry.filesize import alternative, size
 
 class ImageWidget:
     def __init__(self, image_path, widget_id, date_label, space_label, format_label, color_label, width_input,
-                 height_input):
+                 height_input, save_input):
         # Labels
         self.date_label = date_label
         self.space_label = space_label
@@ -16,6 +16,7 @@ class ImageWidget:
         self.color_label = color_label
         self.width_input = width_input
         self.height_input = height_input
+        self.save_input = save_input
 
         # Raw Image Path
         self.widget_id = widget_id
@@ -36,6 +37,8 @@ class ImageWidget:
                     self.short_name += l
             self.short_name += "..."
             self.image_name = self.short_name
+
+
 
     def setup(self):
         self.Form = QtWidgets.QWidget()
@@ -211,6 +214,9 @@ class ImageWidget:
             self.height_input.setText(str(self.img_height))
             print(self.height_input.text())
 
+            # Updating Saving Path
+            self.save_input.setText(self.saving_path)
+
         else:
             print(ui.widget_selected)
             # Resetting widget selected
@@ -224,6 +230,7 @@ class ImageWidget:
             self.width_input.setText("")
             self.height_input.setText("")
             self.color_label.setText('----')
+            self.save_input.setText("")
 
             # Resetting Stylesheet
             self.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;\nborder-radius: 8px;\n}\nQWidget:hover{"

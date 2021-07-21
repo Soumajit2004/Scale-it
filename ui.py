@@ -306,20 +306,20 @@ class Ui_MainWindow(object):
         self.frame_13.setObjectName("frame_13")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.frame_13)
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
-        self.sacing_pathfield = QtWidgets.QLineEdit(self.frame_13)
+        self.saving_pathfield = QtWidgets.QLineEdit(self.frame_13)
         font = QtGui.QFont()
         font.setFamily("Poppins")
         font.setPointSize(12)
-        self.sacing_pathfield.setFont(font)
-        self.sacing_pathfield.setStyleSheet("QLineEdit{\n"
+        self.saving_pathfield.setFont(font)
+        self.saving_pathfield.setStyleSheet("QLineEdit{\n"
                                             "padding: 2px;\n"
                                             "border: 1px solid #BFFFFE;\n"
                                             "border-radius:8px;\n"
                                             "background-color: #BFFFFE;\n"
                                             "color: #161D6F;\n"
                                             "}")
-        self.sacing_pathfield.setObjectName("sacing_pathfield")
-        self.horizontalLayout_7.addWidget(self.sacing_pathfield)
+        self.saving_pathfield.setObjectName("saving_pathfield")
+        self.horizontalLayout_7.addWidget(self.saving_pathfield)
         self.save_path = QtWidgets.QPushButton(self.frame_13)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(10)
@@ -570,6 +570,8 @@ class Ui_MainWindow(object):
         self.convert.clicked.connect(self.convert_fnc)
         self.img_width.textChanged.connect(self.change_width)
         self.img_height.textChanged.connect(self.change_height)
+        self.saving_pathfield.textChanged.connect(self.change_saving_path)
+        self.save_path.clicked.connect(self.choose_saving_path)
 
         # ----------------------------------- My code ------------------------------------------------------------
 
@@ -587,7 +589,7 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "X"))
         self.img_height.setPlaceholderText(_translate("MainWindow", "Height"))
         self.label_6.setText(_translate("MainWindow", "Saving Path"))
-        self.sacing_pathfield.setPlaceholderText(_translate("MainWindow", "Enter Saving Path"))
+        self.saving_pathfield.setPlaceholderText(_translate("MainWindow", "Enter Saving Path"))
         self.save_path.setText(_translate("MainWindow", "..."))
         self.label_4.setText(_translate("MainWindow", "Details"))
         self.label_5.setText(_translate("MainWindow", "Size:"))
@@ -614,7 +616,8 @@ class Ui_MainWindow(object):
                 image_widget_class = ImageWidget(image_path=img_path, widget_id=len(image_list) + 1,
                                                  date_label=self.img_date, space_label=self.img_size,
                                                  format_label=self.img_format, color_label=self.img_color,
-                                                 width_input=self.img_width, height_input=self.img_height)
+                                                 width_input=self.img_width, height_input=self.img_height,
+                                                 save_input=self.saving_pathfield)
 
                 # Add to Image list
                 image_list.append(image_widget_class)
@@ -634,7 +637,6 @@ class Ui_MainWindow(object):
 
     def change_width(self):
         if widget_selected != 0:
-            pass
 
             for i in image_list:
                 if i.widget_id == widget_selected:
@@ -642,8 +644,24 @@ class Ui_MainWindow(object):
 
     def change_height(self):
         if widget_selected != 0:
-            pass
 
             for i in image_list:
                 if i.widget_id == widget_selected:
                     i.img_height = self.img_height.text()
+
+    def change_saving_path(self):
+        if widget_selected != 0:
+
+            for i in image_list:
+                if i.widget_id == widget_selected:
+                    i.saving_path = self.saving_pathfield.text()
+
+    def choose_saving_path(self):
+        if widget_selected != 0:
+            save_path = self.file_selector.getSaveFileName(caption='Save Image',
+                                                           filter="Image files (*.jpg *.png *.jpeg)")[0]
+            if save_path != "":
+                for i in image_list:
+                    if i.widget_id == widget_selected:
+                        i.saving_path = save_path
+                        self.saving_pathfield.setText(i.saving_path)
