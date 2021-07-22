@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
 
     def __init__(self, MainWindow):
         self.file_selector = QtWidgets.QFileDialog()
-        self.brain = Brain()
+
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1080, 720)
@@ -566,6 +566,7 @@ class Ui_MainWindow(object):
 
         # ----------------------------------- My Code ------------------------------------------------------------
 
+        self.brain = Brain(frame=self.warning_shower)
         self.add_image.clicked.connect(self.add_image_fnc)
         self.convert.clicked.connect(self.convert_fnc)
         self.img_width.textChanged.connect(self.change_width)
@@ -603,6 +604,9 @@ class Ui_MainWindow(object):
 
     # ------------------------------------------ My Functions --------------------------------------------------------
 
+    def warning_shower(self, text):
+        QtWidgets.QMessageBox.warning(self.frame_2, "Scale-it", text)
+
     # Add Image Button Function
     def add_image_fnc(self):
         # Getting Filename
@@ -633,7 +637,13 @@ class Ui_MainWindow(object):
     def convert_fnc(self):
         # Converting Image
         for i in image_list:
-            self.brain.run(img_instance=i)
+            # th_convert = threading.Thread(target=self.brain.run, args=[i])
+            # th_convert.start()
+            # th_convert.join()
+            self.brain.run(i)
+
+
+
 
     def change_width(self):
         if widget_selected != 0:
