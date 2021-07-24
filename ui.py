@@ -9,7 +9,7 @@
 import threading
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from custom_image_widget import ImageWidget
+from custom_widget import ImageWidget, Ui_pogress_widget
 from brain import Brain
 
 image_list = []
@@ -20,7 +20,6 @@ class Ui_MainWindow(object):
 
     def __init__(self, MainWindow):
         self.file_selector = QtWidgets.QFileDialog()
-
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1080, 720)
@@ -635,15 +634,23 @@ class Ui_MainWindow(object):
                 print("Invalid Image Path")
 
     def convert_fnc(self):
+
         # Converting Image
         for i in image_list:
-            # th_convert = threading.Thread(target=self.brain.run, args=[i])
-            # th_convert.start()
-            # th_convert.join()
-            self.brain.run(i)
+            pogress_bar = QtWidgets.QProgressDialog(f"Converting...", "Cancel", 0, 100, self.frame_2)
+            pogress_bar.setWindowTitle("Scale-it")
+            pogress_bar.setMinimumWidth(300)
+            pogress_widget = Ui_pogress_widget()
+            pogress_bar.setLayout(pogress_widget.setupUi())
+            pogress_widget.p_name.setText(i.image_name)
+            pogress_bar.forceShow()
 
+            self.brain.run(i, pogress_widget)
 
+            pogress_bar.deleteLater()
 
+        if len(image_list) == 0:
+            self.warning_shower("Please add images to continue.")
 
     def change_width(self):
         if widget_selected != 0:

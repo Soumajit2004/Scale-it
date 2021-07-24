@@ -1,5 +1,9 @@
+import time
+
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget, QProgressBar, QVBoxLayout, QGridLayout
+
 import ui
 from PIL.ExifTags import TAGS
 import os
@@ -37,8 +41,6 @@ class ImageWidget:
                     self.short_name += l
             self.short_name += "..."
             self.image_name = self.short_name
-
-
 
     def setup(self):
         self.Form = QtWidgets.QWidget()
@@ -224,18 +226,14 @@ class ImageWidget:
 
             # Updating Resolution Field
             self.width_input.setText(str(self.img_width))
-            print(self.width_input.text())
             self.height_input.setText(str(self.img_height))
-            print(self.height_input.text())
 
             # Updating Saving Path
             self.save_input.setText(self.saving_path)
 
         else:
-            print(ui.widget_selected)
             # Resetting widget selected
             ui.widget_selected = 0
-            print(ui.widget_selected)
 
             # Resetting Labels
             self.date_label.setText("0000-00-00")
@@ -249,3 +247,101 @@ class ImageWidget:
             # Resetting Stylesheet
             self.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;\nborder-radius: 8px;\n}\nQWidget:hover{"
                                     "\nborder: 3px solid #161D6F\n}\n")
+
+
+class Ui_pogress_widget():
+
+
+    def setupUi(self):
+
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.p_frame = QtWidgets.QFrame()
+        self.p_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.p_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.p_frame.setObjectName("p_frame")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.p_frame)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.p_name = QtWidgets.QLabel(self.p_frame)
+        font = QtGui.QFont()
+        font.setFamily("Poppins")
+        font.setPointSize(20)
+        font.setBold(True)
+        font.setWeight(75)
+        self.p_name.setFont(font)
+        self.p_name.setStyleSheet("QLabel{\n"
+                                  "border: 0px;\n"
+                                  "color:#161D6F;\n"
+                                  "}")
+        self.p_name.setObjectName("p_name")
+        self.horizontalLayout.addWidget(self.p_name)
+        self.p_value = QtWidgets.QLabel(self.p_frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.p_value.sizePolicy().hasHeightForWidth())
+        self.p_value.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Poppins")
+        font.setPointSize(20)
+        font.setBold(True)
+        font.setWeight(75)
+        self.p_value.setFont(font)
+        self.p_value.setStyleSheet("QLabel{\n"
+                                   "border: 0px;\n"
+                                   "color:#161D6F;\n"
+                                   "}")
+        self.p_value.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.p_value.setObjectName("p_value")
+        self.horizontalLayout.addWidget(self.p_value)
+        self.p_per = QtWidgets.QLabel(self.p_frame)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.p_per.sizePolicy().hasHeightForWidth())
+        self.p_per.setSizePolicy(sizePolicy)
+        font = QtGui.QFont()
+        font.setFamily("Poppins")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.p_per.setFont(font)
+        self.p_per.setStyleSheet("QLabel{\n"
+                                 "border: 0px;\n"
+                                 "color:#161D6F;\n"
+                                 "}")
+        self.p_per.setAlignment(QtCore.Qt.AlignCenter)
+        self.p_per.setObjectName("p_per")
+        self.horizontalLayout.addWidget(self.p_per)
+        self.verticalLayout.addWidget(self.p_frame)
+        self.p_bar = QtWidgets.QProgressBar()
+        self.p_bar.setStyleSheet("QProgressBar\n"
+                                 "{\n"
+                                 "border: 1px solid #161D6F;\n"
+                                 "border-radius: 8px;\n"
+                                 "color: black;\n"
+                                 "}\n"
+                                 "QProgressBar::chunk \n"
+                                 "{\n"
+                                 "background-color: #98DED9;\n"
+                                 "border-radius :8px;\n"
+                                 "}    ")
+        self.p_bar.setProperty("value", 0)
+        self.p_bar.setTextVisible(False)
+        self.p_name.setText("Image Name")
+        self.p_value.setText("0")
+        self.p_per.setText("%")
+        self.p_bar.setObjectName("p_bar")
+        self.p_bar.show()
+        self.verticalLayout.addWidget(self.p_bar)
+
+        self.p_bar.setMaximum(100)
+        return self.verticalLayout
+
+    def on_count_changed(self, value):
+
+        for i in range(value-self.p_bar.value()):
+            self.p_bar.setValue(value)
+            self.p_value.setText(str(value))
