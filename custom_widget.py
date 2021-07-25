@@ -2,7 +2,7 @@ import time
 
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QWidget, QProgressBar, QVBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QWidget, QProgressBar, QVBoxLayout, QGridLayout, QApplication
 
 import ui
 from PIL.ExifTags import TAGS
@@ -245,15 +245,14 @@ class ImageWidget:
             self.save_input.setText("")
 
             # Resetting Stylesheet
-            self.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;\nborder-radius: 8px;\n}\nQWidget:hover{"
+            self.Form.setStyleSheet("QWidget{\nbackground-color:#98DED9;border: 2px solid #161D6F;\nborder-radius: "
+                                    "8px;\n}\nQWidget:hover{ "
                                     "\nborder: 3px solid #161D6F\n}\n")
 
 
 class Ui_pogress_widget():
 
-
     def setupUi(self):
-
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.p_frame = QtWidgets.QFrame()
@@ -341,7 +340,15 @@ class Ui_pogress_widget():
         return self.verticalLayout
 
     def on_count_changed(self, value):
+        for i in range(value - self.p_bar.value()):
+            self.p_bar.setValue(self.p_bar.value() + 1)
+            self.p_value.setText(str(self.p_bar.value() + 1))
+            QApplication.processEvents()
+            time.sleep(0.1)
 
-        for i in range(value-self.p_bar.value()):
-            self.p_bar.setValue(value)
-            self.p_value.setText(str(value))
+        if value == 99:
+            self.p_bar.setValue(100)
+            QApplication.processEvents()
+            time.sleep(0.1)
+
+
