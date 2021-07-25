@@ -1,3 +1,4 @@
+import os
 import threading
 import time
 import sys
@@ -51,3 +52,4 @@ class Brain:
                 self.warning("Invalid Saving Path!")
         finally:
             progress_layout.on_count_changed(99)
+            os.remove("output/image.png")

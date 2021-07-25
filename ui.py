@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1080, 720)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("ui_files/assets/images/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("assets/images/logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setStyleSheet("background-color:#F6F6F6;")
@@ -99,7 +99,7 @@ class Ui_MainWindow(object):
                                      "color:#98DED9;\n"
                                      "}")
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap("ui_files/assets/images/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap("assets/images/add.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.add_image.setIcon(icon1)
         self.add_image.setIconSize(QtCore.QSize(30, 30))
         self.add_image.setFlat(False)
