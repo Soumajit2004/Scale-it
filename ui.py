@@ -23,8 +23,10 @@ widget_selected = 1
 class Ui_MainWindow(object):
 
     def __init__(self, MainWindow):
+        # Initializing File Selector
         self.file_selector = QtWidgets.QFileDialog()
 
+        # Initializing main UI Selector
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1080, 720)
         icon = QtGui.QIcon()
@@ -569,7 +571,10 @@ class Ui_MainWindow(object):
 
         # ----------------------------------- My Code ------------------------------------------------------------
 
-        self.brain = Brain(frame=self.warning_shower)
+        # Initializing Brain class
+        self.brain = Brain(self.warning_shower)
+
+        # Connecting Buttons
         self.add_image.clicked.connect(self.add_image_fnc)
         self.convert.clicked.connect(self.convert_fnc)
         self.img_width.textChanged.connect(self.change_width)
@@ -608,15 +613,18 @@ class Ui_MainWindow(object):
     # ------------------------------------------ My Functions --------------------------------------------------------
 
     def warning_shower(self, text):
+        """Shows Warnings with the text inputted"""
+        # Showing Warning
         QtWidgets.QMessageBox.warning(self.frame_2, "Scale-it", text)
 
-    # Add Image Button Function
     def add_image_fnc(self):
+        """Add Custom Image Widget to the ui and image instance on image list"""
+
         # Getting Filename
         img_path = self.file_selector.getOpenFileName(caption='Select Image',
                                                       filter="Image files (*.jpg *.png *.jpeg)")[0]
-        print(img_path)
-        # Checking for valid img_path
+
+        # Checking for null img_path
         if img_path:
             try:
                 # Create Widget
@@ -626,11 +634,11 @@ class Ui_MainWindow(object):
                                                  width_input=self.img_width, height_input=self.img_height,
                                                  save_input=self.saving_pathfield)
 
-                # Add to Image list
+                # Adding to Image list
                 image_list.append(image_widget_class)
                 print(image_list)
 
-                # Build Widget
+                # Build Custom Widget
                 widget = image_widget_class.setup()
                 self.gallery.addWidget(widget)
 
@@ -638,9 +646,11 @@ class Ui_MainWindow(object):
                 print("Invalid Image Path")
 
     def convert_fnc(self):
+        """ This function converts all image instance on image_list using Brain class"""
 
         # Converting Image
         for i in image_list:
+            # Progress Popup
             progress_dialoge = QtWidgets.QDialog(self.frame_2)
             progress_dialoge.setMinimumWidth(400)
             progress_layout = Ui_pogress_widget()
@@ -650,13 +660,19 @@ class Ui_MainWindow(object):
             progress_dialoge.show()
             QApplication.processEvents()
 
+            # Calling brain on image instance
             self.brain.run(i, progress_layout)
+
+            # Deleting progressbar after task finished
             progress_dialoge.deleteLater()
 
+        # Showing Warning if no image selected
         if len(image_list) == 0:
             self.warning_shower("Please add images to continue.")
 
     def change_width(self):
+        """Detecting if the user changed width of a image"""
+
         if widget_selected != 0:
 
             for i in image_list:
@@ -664,6 +680,8 @@ class Ui_MainWindow(object):
                     i.img_width = self.img_width.text()
 
     def change_height(self):
+        """Detecting if the user changed height of a image"""
+
         if widget_selected != 0:
 
             for i in image_list:
@@ -671,6 +689,8 @@ class Ui_MainWindow(object):
                     i.img_height = self.img_height.text()
 
     def change_saving_path(self):
+        """Detecting if the user changed saving path of a image"""
+
         if widget_selected != 0:
 
             for i in image_list:
@@ -678,6 +698,8 @@ class Ui_MainWindow(object):
                     i.saving_path = self.saving_pathfield.text()
 
     def choose_saving_path(self):
+        """Detecting if the user browsed and changed saving path of a image"""
+
         if widget_selected != 0:
             save_path = self.file_selector.getSaveFileName(caption='Save Image',
                                                            filter="Image files (*.jpg *.png *.jpeg)")[0]
