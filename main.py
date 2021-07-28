@@ -7,6 +7,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
 
+    # Loading Fonts
     QtGui.QFontDatabase.addApplicationFont('assets/Poppins/Poppins-Bold.ttf')
     QtGui.QFontDatabase.addApplicationFont('assets/Poppins/Poppins-Black.ttf')
     QtGui.QFontDatabase.addApplicationFont('assets/Poppins/Poppins-SemiBold.ttf')
