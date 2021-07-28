@@ -1,9 +1,7 @@
 import time
-
 from PIL import Image
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QProgressBar, QVBoxLayout, QGridLayout, QApplication
-
 import ui
 from PIL.ExifTags import TAGS
 import os
@@ -132,6 +130,8 @@ class ImageWidget:
         return self.Form
 
     def delete_fnc(self):
+        """Deletes the widget and resets labels"""
+
         # Iterate through image list and finds widget
         for i in ui.image_list:
             if i.widget_id == self.widget_id:
@@ -154,11 +154,14 @@ class ImageWidget:
         self.Form.deleteLater()
 
     def open_image(self):
+        """Opens Image through PIL"""
+
         # Opens Image
         img = Image.open(self.image)
         img.show()
 
     def widget_selected(self, event):
+        """Checks if the widget is selected"""
 
         if ui.widget_selected != self.widget_id:
             print(ui.widget_selected)
@@ -250,9 +253,12 @@ class ImageWidget:
                                     "\nborder: 3px solid #161D6F\n}\n")
 
 
-class Ui_pogress_widget():
+# Custom Progress Dialogue
+class Ui_pogress_widget:
 
     def setupUi(self):
+        """ Returns a layout with all custom widgets """
+
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.p_frame = QtWidgets.QFrame()
@@ -340,6 +346,8 @@ class Ui_pogress_widget():
         return self.verticalLayout
 
     def on_count_changed(self, value):
+        """takes value and changes value with animation"""
+
         for i in range(value - self.p_bar.value()):
             self.p_bar.setValue(self.p_bar.value() + 1)
             self.p_value.setText(str(self.p_bar.value() + 1))
@@ -350,5 +358,3 @@ class Ui_pogress_widget():
             self.p_bar.setValue(100)
             QApplication.processEvents()
             time.sleep(0.1)
-
-
