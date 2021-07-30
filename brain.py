@@ -1,5 +1,6 @@
 import os
-import threading
+from multiprocessing import Process
+import resource
 import time
 import cv2
 from PIL import Image
@@ -35,7 +36,7 @@ class Brain:
             cv2.imwrite("output/image.png", result_img)
 
         # Running Thread Function on diffrent Thread
-        th_1 = threading.Thread(target=thread, args=[image])
+        th_1 = Process(target=thread, args=image)
         th_1.start()
         th_1.join()
         # Popup progressbar changed
