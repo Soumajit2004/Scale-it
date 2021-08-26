@@ -1,6 +1,5 @@
 import os
-from multiprocessing import Process
-import resource
+import threading
 import time
 import cv2
 from PIL import Image
@@ -33,10 +32,10 @@ class Brain:
             # Scaling Image
             result_img = sr.upsample(image_input)
             # Saving Upscale Model Image
-            cv2.imwrite("output/image.png", result_img)
+            cv2.imwrite("output/image.jpg", result_img)
 
         # Running Thread Function on diffrent Thread
-        th_1 = Process(target=thread, args=image)
+        th_1 = threading.Thread(target=thread, args=[image])
         th_1.start()
         th_1.join()
         # Popup progressbar changed
@@ -45,7 +44,7 @@ class Brain:
         time.sleep(1)
 
         # Resizing Image
-        img = Image.open("output/image.png")
+        img = Image.open("output/image.jpg")
         # Popup progressbar changed
         progress_layout.on_count_changed(71)
 
@@ -68,4 +67,4 @@ class Brain:
             # Popup progressbar changed
             progress_layout.on_count_changed(99)
             # Deleting the temporary image
-            os.remove("output/image.png")
+            os.remove("output/image.jpg")
