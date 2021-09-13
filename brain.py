@@ -2,7 +2,7 @@ import os
 import threading
 import time
 import cv2
-from PIL import Image
+import PIL
 
 
 # This class converts images main process happens here used in ui.py --> convert_fnc()
@@ -32,9 +32,9 @@ class Brain:
             # Scaling Image
             result_img = sr.upsample(image_input)
             # Saving Upscale Model Image
-            cv2.imwrite("output/image.jpg", result_img)
+            cv2.imwrite("output/image.png", result_img)
 
-        # Running Thread Function on diffrent Thread
+        # Running Thread Function on different Thread
         th_1 = threading.Thread(target=thread, args=[image])
         th_1.start()
         th_1.join()
@@ -44,7 +44,7 @@ class Brain:
         time.sleep(1)
 
         # Resizing Image
-        img = Image.open("output/image.jpg")
+        img = PIL.Image.open("output/image.png")
         # Popup progressbar changed
         progress_layout.on_count_changed(71)
 
