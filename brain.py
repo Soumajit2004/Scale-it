@@ -27,24 +27,15 @@ class Brain:
         # Popup progressbar changed
         progress_layout.on_count_changed(21)
 
-        def thread(image_input):
-            """Worker Thread Function for Upscalling Image"""
-            # Scaling Image
-            result_img = sr.upsample(image_input)
-            # Saving Upscale Model Image
-            cv2.imwrite("output/image.png", result_img)
+        result_img = sr.upsample(image)
 
-        # Running Thread Function on different Thread
-        th_1 = threading.Thread(target=thread, args=[image])
-        th_1.start()
-        th_1.join()
+        # Saving Upscale Model Image
+        cv_img = cv2.cvtColor(result_img, cv2.COLOR_BGR2RGB)
         # Popup progressbar changed
         progress_layout.on_count_changed(61)
-        # Waiting for 1 sec just in case
-        time.sleep(1)
 
         # Resizing Image
-        img = PIL.Image.open("output/image.png")
+        img = PIL.Image.fromarray(cv_img)
         # Popup progressbar changed
         progress_layout.on_count_changed(71)
 
@@ -66,5 +57,4 @@ class Brain:
         finally:
             # Popup progressbar changed
             progress_layout.on_count_changed(99)
-            # Deleting the temporary image
-            os.remove("output/image.jpg")
+
